@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
-@WebServlet("/ShoppingCardServlet")
-public class ShoppingCardServlet extends HttpServlet {
+@WebServlet("/ShoppingCartServlet")
+public class ShoppingCartServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -25,12 +25,12 @@ public class ShoppingCardServlet extends HttpServlet {
 
 		// 從session拿出暫存的購物車資料
 		HttpSession session = req.getSession();
-		Map<String, Integer> myCard = (Map) session.getAttribute("myCard");
+		Map<String, Integer> myCart = (Map) session.getAttribute("myCart");
 
 		// 購物車資料為null的時候先實體化
-		if (myCard == null) {
-			myCard = new HashMap<String, Integer>();
-			session.setAttribute("myCard", myCard);
+		if (myCart == null) {
+			myCart = new HashMap<String, Integer>();
+			session.setAttribute("myCart", myCart);
 		}
 
 		// 取得所有req的parameter，動態的做迭代
@@ -40,7 +40,7 @@ public class ShoppingCardServlet extends HttpServlet {
 		while (iterator.hasNext()) {
 			// 某物品在session購物車中紀錄的數量
 			String key = iterator.next();
-			Integer inCardQuantity = myCard.get(key);
+			Integer inCartQuantity = myCart.get(key);
 			Integer newQuantity = 0;
 			
 			try {
@@ -50,15 +50,15 @@ public class ShoppingCardServlet extends HttpServlet {
 				Integer addQuantity = String2Integer(value);
 				
 				// 如果某物品目前沒有在購屋車內則設定目前數量為0
-				if (inCardQuantity == null) {
-					inCardQuantity = 0;
+				if (inCartQuantity == null) {
+					inCartQuantity = 0;
 				}
 	
 				// 做加總，假設超出Integer最大或最小範圍則顯示錯誤訊息並且不做任何加減
-				newQuantity = addQuantity + inCardQuantity;
+				newQuantity = addQuantity + inCartQuantity;
 			} catch (Exception e) {
 				e.printStackTrace();
-				newQuantity = inCardQuantity;
+				newQuantity = inCartQuantity;
 				req.setAttribute("errMsg", "數量超過最大或最小限制");
 			}
 
@@ -68,11 +68,11 @@ public class ShoppingCardServlet extends HttpServlet {
 			}
 
 			// 更新購物車
-			myCard.put(key, newQuantity);
+			myCart.put(key, newQuantity);
 		}
 
-		System.out.println("最新購物車內容物: " + myCard);
-		req.getRequestDispatcher("/shoppingCard.jsp").forward(req, resp);
+		System.out.println("最新購物車內容物: " + myCart);
+		req.getRequestDispatcher("/shoppingCart.jsp").forward(req, resp);
 	}
 
 	@Override

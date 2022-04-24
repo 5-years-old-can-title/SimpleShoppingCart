@@ -8,10 +8,10 @@
 </head>
 <body>
 	Hello，目前購物車內的物品
-	${ myCard }
+	${ myCart }
 	
 	
-	<form action="<%=request.getContextPath()%>/ShoppingCardServlet" method="post">
+	<form action="<%=request.getContextPath()%>/ShoppingCartServlet" method="post">
 		<label>鉛筆: <input type="number" name="pencil"></label><br>
 		<label>原子筆: <input type="number" name="pen"></label><br>
 		<label>橡皮擦: <input type="number" name="eraser"></label><br>
